@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard"
 import Products from "./pages/Products"
 import Layout from "./Layout"
 import Login from "./components/Login"
+import Register from "./components/register"
 
 function App() {
 
@@ -15,12 +16,14 @@ function App() {
 
       <Routes >
         <Route element={<Layout />}>
-          <Route path="/" element={<Account />} />
+          <Route path="/Account" element={<Account />} />
           <Route path="/Calculator" element={<Calculator />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/Products" element={<Products />} />
         </Route>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
       </Routes>
     </>
   )

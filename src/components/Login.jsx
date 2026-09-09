@@ -1,12 +1,31 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Ferrofluid from "../assets/Ferrofluid"
 import { useState } from "react";
 
 function Login() {
     const navigate = useNavigate();
     const [status, setstatus] = useState();
-    const handlesubmit = (e) => {
-        e.preventDefaults();
+    const [Email, setEmail] = useState("");
+    const [password, setpassword] = useState("");
+    const [error, seterror] = useState("");
+    const handlesubmit = async (e) => {
+        e.preventDefault();
+        const response = await fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: Email,
+                password: password,
+                status: status
+            })
+        });
+        const data = await response.json();
+        if (data.success === true) {
+            navigate("/Dashboard");
+        }
+        else {
+            seterror(data.message);
+        };
     };
     return (
 
@@ -40,9 +59,9 @@ function Login() {
                         <h1 className="text-center m-5 font-bold text-[30px]">Login</h1>
                         <div className="flex flex-col gap-2 m-4">
                             <label className="text-[20px]" htmlFor="">Email</label>
-                            <input className="w-full border-2 border-[#e6e619] h-[37px] rounded-[8px] px-4" type="email" name="email" placeholder="Email" required />
+                            <input className="w-full border-2 border-[#e6e619] h-[37px] rounded-[8px] px-4" type="email" value={Email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
                             <label className="text-[20px]" htmlFor="">password</label>
-                            <input className="w-full border-2 border-[#e6e619] h-[37px] rounded-[8px] px-4" type="password" placeholder="Password" name="password" required />
+                            <input className="w-full border-2 border-[#e6e619] h-[37px] rounded-[8px] px-4" type="password" placeholder="Password" value={password} onChange={(e) => setpassword(e.target.value)} required />
                         </div>
                         <div className="text-center p-10 flex items-center   w-full  justify-center gap-8 ">
                             <div onClick={() => setstatus("Employee")} className={`border-2 rounded-[15px] cursor-pointer w-40 p-6 ${status === "Employee" ? "border-[#add63c]" : "border-[#fafafa]"}`}>Employee</div>
@@ -50,9 +69,16 @@ function Login() {
 
                         </div>
                         <div className="text-center w-full">
-                            {status === "Employee" && <p>Don't have an account <span className="cursor-pointer hover:text-[#1b33bf]">Register</span></p>}
+                            {status === "Employee" && <p>Don't have an account <Link to={"/register"} className="cursor-pointer hover:text-[#1b33bf]">Register</Link></p>}
                         </div>
 
+                        <div className="text-center w-full">
+                            {error && (
+                                <p style={{ color: "red" }}>
+                                    {error}
+                                </p>
+                            )}
+                        </div>
 
                         <div className="flex justify-between   inset-x-0 bottom-10 m-10">
                             <button className="p-4 rounded-[14px] text-[18px] bg-[#6a64ff] w-[30%] transition-all duration-300 ease-in-out hover:bg-[#46ace8]" type="button" onClick={() => navigate("/")}>Back</button>
