@@ -3,9 +3,9 @@ const db = require("./db");
 function login(req, res) {
     const { email, password, status } = req.body;
 
-    const sql = `SELECT user_id, email, password, status FROM users WHERE email = ? AND status = ?`;
+    const sql = `SELECT user_id, email, password, status FROM users WHERE email = ? AND status = ? AND password = ?`;
 
-    db.query(sql, [email, status], (err, results) => {
+    db.query(sql, [email, status, password], (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).json({
