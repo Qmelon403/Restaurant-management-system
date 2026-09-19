@@ -41,7 +41,7 @@ function Navbar() {
                     <ul className="flex flex-col md:flex-row gap-6 p-6 md:p-0">
 
                         <li>
-                            <Link to="/">Account</Link>
+                            <Link to="/Account">Account</Link>
                         </li>
 
                         <li>
@@ -69,7 +69,7 @@ function Navbar() {
                         `}
                     >
                         <button
-                            onClick={() => navigate("/login")}
+                            onClick={() => navigate("/")}
                             className="
                                 w-full
                                 text-[#040105]
