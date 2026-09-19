@@ -11,6 +11,7 @@ app.use(express.json());
 
 app.post("/api/login", login);
 app.post("/api/insert", insert.insertingredients);
+app.post("/api/insertproducts", insert.insertproducts);
 
 app.listen(5000, () => {
     console.log("server running")

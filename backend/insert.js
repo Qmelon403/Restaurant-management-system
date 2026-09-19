@@ -3,31 +3,65 @@ const engine = require("./engine");
 
 function insertproducts(req, res) {
 
-    const { name, selling_price, } = req.body;
-    const ingredients = req.body;
+    const { name, selling_price, ingredients } = req.body;
 
-    const { product_cost, profit_unit } = engine.calculateproduct(ingredients, selling_price);
+    const productIds = ingredients.map(
+        ingred => ingred.ingredient_id
+    );
 
-    let product_id;
+    const placeholders = productIds.map(() => "?").join(",");
 
-    const sql = `INSERT INTO products (name, selling_price, product_cost, profit_unit) VALUES (?, ?, ?, ?)`;
+    const sql2 = `
+        SELECT *
+        FROM ingredients
+        WHERE ingredient_id IN (${placeholders})
+    `;
 
-    db.query(sql, [name, selling_price, product_cost, profit_unit], (err, result) => {
+    db.query(sql2, productIds, (err, dtaingred) => {
+
         if (err) {
             console.log(err);
-            return;
-        };
-        res.json(
-            {
-                success: true,
-                message: "database updated"
+            return res.status(500).json({ error: err.message });
+        }
+
+
+        const { product_cost, profit_unit } =
+            engine.calculateproduct(
+                ingredients,
+                selling_price,
+                dtaingred
+            );
+
+        const sql = `
+            INSERT INTO products
+            (name, selling_price, product_cost, profit_unit)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        db.query(
+            sql,
+            [name, selling_price, product_cost, profit_unit],
+            (err, result) => {
+
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({
+                        error: err.message
+                    });
+                }
+
+                const product_id = result.insertId;
+
+
+                insertrecipe(product_id, ingredients);
+
+                res.json({
+                    success: true,
+                    message: "database updated"
+                });
             }
         );
-        product_id = result.insertId;
-    })
-    insertrecipe(product_id, ingredients);
-
-
+    });
 }
 function insertingredients(req, res) {
     const { name, cost, unit } = req.body;
