@@ -15,3 +15,6 @@ function calculateproduct(ingredients, selling_price) {
 
 
 };
+function statistic(){
+    
+}
