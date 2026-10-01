@@ -33,8 +33,13 @@ function Products() {
                             <h1 className="text-[#03041a] text-center text-[30px] font-[700] md:text-[70px]">Add a Product</h1>
                         </div>
                         <div className="m-2 p-1 h-[85%] flex justify-center items-center">
-                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]"></div>
-                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]"></div>
+                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]">
+                                <form action="">
+
+                                </form>
+                            </div>
+                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]">
+                            </div>
                         </div>
                     </div>
                 </main>
