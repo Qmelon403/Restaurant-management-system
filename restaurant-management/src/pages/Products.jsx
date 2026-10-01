@@ -1,5 +1,6 @@
 import Ferrofluid from "../assets/Ferrofluid"
 function Products() {
+
     return (
         <>
 
@@ -26,8 +27,16 @@ function Products() {
 
 
 
-                <main className="relative z-5">
-                    <h2 className="text-white">Hello world</h2>
+                <main className="relative p-2 z-5">
+                    <div className="m-1    h-screen">
+                        <div className="m-1  h-[15%] rounded-[30px] bg-gradient-to-r from-[#88b6d1]/70 to-[#888ad1]/70 flex justify-center  items-center">
+                            <h1 className="text-[#03041a] text-center text-[30px] font-[700] md:text-[70px]">Add a Product</h1>
+                        </div>
+                        <div className="m-2 p-1 h-[85%] flex justify-center items-center">
+                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]"></div>
+                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]"></div>
+                        </div>
+                    </div>
                 </main>
             </div>
         </>
