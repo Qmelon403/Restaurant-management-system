@@ -2,26 +2,35 @@ import { useEffect, useState } from "react"
 import Ferrofluid from "../assets/Ferrofluid"
 function Products() {
 
-    const [ingredients, setingredients] = useState([]);
-    const [data, setData] = useState([]);
+    const [ingredients2, setingredients] = useState([]);
+    const [Ingredients, setData] = useState([]);
+    const [sellingprice, setselling] = ("");
+    const [productname, setproductname] = ("");
+
+
+    const products = {
+        name: productname,
+        selling_price: sellingprice,
+        ingredients: Ingredients
+    };
 
     useEffect(() => {
         async function getingredients() {
-            const response = await fetch("http://localhost:5000/api/ingredients");
-            const data = await response.json();
-            setingredients(data);
+            const response = await fetch("http://localhost:5000/api/select");
+            const data1 = await response.json();
+            setingredients(data1);
         }
         getingredients();
     }, []);
 
     const sendData = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/ingredients", {
+            const response = await fetch("http://localhost:5000/api/insertproducts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(products),
             });
 
             if (!response.ok) {
@@ -75,7 +84,7 @@ function Products() {
                                     <div className="flex flex-col gap-5">
                                         <label className="block mt-4 mb-2 text-lg font-bold
                                       text-white/90 tracking-wide">Product Name</label>
-                                        <input type="text" placeholder="Enter product name" className="w-full mt-2 p-3
+                                        <input onChange={(e) => setproductname(e.target.value)} type="text" placeholder="Enter product name" className="w-full mt-2 p-3
                                       bg-white/20 backdrop-blur-md
                                       border border-white/30
                                       rounded-md text-white
@@ -83,7 +92,7 @@ function Products() {
                                       focus:outline-none focus:ring-2 focus:ring-blue-400" />
                                         <label className="block mt-4 mb-2 text-lg font-bold
                                       text-white/90 tracking-wide">Selling Price</label>
-                                        <input type="text" placeholder="Enter Selling price" className="w-full mt-2 p-3
+                                        <input onChange={(e) => setselling(e.target.value)} type="text" placeholder="Enter Selling price" className="w-full mt-2 p-3
                                       bg-white/20 backdrop-blur-md
                                       border border-white/30
                                       rounded-md text-white
@@ -93,7 +102,7 @@ function Products() {
                                     <label className="mt-4 block mb-2 text-lg font-bold
                                      text-white/90 tracking-wide">Ingredients</label>
                                     <div>
-                                        {ingredients.map((item) => (
+                                        {ingredients2.map((item) => (
                                             <div
                                                 key={item.id}
                                                 className="w-full rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
