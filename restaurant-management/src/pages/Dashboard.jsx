@@ -140,12 +140,10 @@ function Dashboard() {
     }
 
     return (
-        <div className="relative min-h-full isolate">
+        <div className="relative min-h-screen isolate overflow-hidden">
 
-            {/* =========================
-                FERROFLUID BACKGROUND
-            ========================== */}
-            <div className="absolute inset-0 z-0 bg-slate-950">
+          
+            <div className="absolute inset-0 z-0 overflow-hidden bg-slate-950">
 
                 <Ferrofluid
                     colors={["#8c820d", "#5d38d7", "#457a96"]}
@@ -168,7 +166,7 @@ function Dashboard() {
 
 
 
-            <main className="relative z-0 ">
+            <main className="relative z-10 ">
                 <div className="w-full h-[30vh] justify-between flex place-content-center items-center  ">
                     <div className=" w-1/4 rounded-[18px] border-3 border-[#bce082] gap-2 m-3 ">
                         <h1 className="font-mono font-bold  text-center text-white text-[28px] p-3">Profit</h1>
@@ -223,30 +221,42 @@ function Dashboard() {
                     </div>
 
                 </div>
-                <div className="w-full text-white h-[50vh]  flex justify-center gap-2 ">
+              <div className="w-full text-white px-2">
 
-                    <div className="bg-[#120517]/40 w-[100%] rounded-[18px] p-3 flex justify-center">
+    <div className="w-full rounded-[18px] p-3 bg-[#120517]/40 overflow-hidden">
 
-                        <div className="w-full md:w-[80%]   bg-gradient-to-r from-[#2a0c37]/40 to-[#5d38d7]/40 rounded-2xl h-full p-8">
+        <div className="w-full md:w-[80%] mx-auto
+                        bg-gradient-to-r from-[#2a0c37]/40 to-[#5d38d7]/40
+                        rounded-2xl p-4 md:p-8
+                        box-border overflow-hidden">
 
-                            <h2 className="text-white text-2xl font-bold mb-6">
-                                Monthly Sales
-                            </h2>
+            <h2 className="text-white text-2xl font-bold mb-6">
+                Monthly Sales
+            </h2>
 
-                            <div className="relative w-full h-[350px]">
+            {/* Chart boundary */}
+            <div className="relative w-full min-w-0 h-[350px] overflow-hidden">
 
-                                <Line
-                                    data={linedata}
-                                    options={lineoptions}
-                                />
-                            </div>
+                <Line
+                    data={linedata}
+                    options={{
+                        ...lineoptions,
+                        responsive: true,
+                        maintainAspectRatio: false,
+                    }}
+                    style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                    }}
+                />
 
-                        </div>
+            </div>
 
-                    </div>
+        </div>
 
-                </div>
+    </div>
 
+</div>
 
             </main>
 

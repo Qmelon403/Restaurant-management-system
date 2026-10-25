@@ -101,7 +101,26 @@ function Products() {
                                     </div>
                                     <label className="mt-4 block mb-2 text-lg font-bold
                                      text-white/90 tracking-wide">Ingredients</label>
-                                    <div>
+                                     {Ingredients.map((ingred) =>(
+                                        <div>
+                                            <h1>{ingred.name}</h1>
+                                            <p>{ingred.price}</p>
+                                            <p></p>
+                                        </div>
+                                     ))};
+                                    
+                                    <button
+                                        type="submit"
+                                        className="rounded-lg bg-green-600 px-4 py-2 text-white"
+                                    >
+                                        Submit Ingredients
+                                    </button>
+
+
+                                </form>
+                            </div>
+                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]">
+<div>
                                         {ingredients2.map((item) => (
                                             <div
                                                 key={item.id}
@@ -137,18 +156,6 @@ function Products() {
 
 
                                     </div>
-                                    <button
-                                        type="submit"
-                                        className="rounded-lg bg-green-600 px-4 py-2 text-white"
-                                    >
-                                        Submit Ingredients
-                                    </button>
-
-
-                                </form>
-                            </div>
-                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]">
-
                             </div>
                         </div>
                     </div>
