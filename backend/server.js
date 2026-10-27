@@ -14,7 +14,8 @@ app.post("/api/login", login);
 app.post("/api/insert", insert.insertingredients);
 app.post("/api/insertproducts", insert.insertproducts);
 
-app.get("api/select", select.selectingredients);
+app.get("/api/select", select.selectingredients);
+app.get("/api/selectproducts", select.selectproducts);
 
 
 app.listen(5000, () => {
