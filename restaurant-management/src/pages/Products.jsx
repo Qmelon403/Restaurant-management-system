@@ -3,6 +3,7 @@ import Ferrofluid from "../assets/Ferrofluid"
 function Products() {
 
     const [ingredients2, setingredients] = useState([]);
+    const [quantities, setQuantities] = useState({});
     const [Ingredients, setData] = useState([]);
     const [sellingprice, setselling] = ("");
     const [productname, setproductname] = ("");
@@ -59,7 +60,14 @@ function Products() {
     const addData = (item) => {
         setData((prev) => [...prev, item]);
     };
-
+    function changeQuantity(id, amount) {
+        setQuantities((previous) => ({
+            ...previous,
+            [id]: Math.max(1, (previous[id] || 1) + amount)
+        }));
+    }
+    console.log(ingredients2);
+    console.log(quantities);
     return (
         <>
 
@@ -92,13 +100,12 @@ function Products() {
                             <h1 className="text-[#03041a] text-center text-[30px] font-[700] md:text-[70px]">Add a Product</h1>
                         </div>
                         <div className="m-2 p-1 h-[85%] flex justify-center items-center">
-                            <div className="w-[50%] rounded-[16px] m-2 bg-[#e6d5f2]/40 h-[94%]">
+                            <div className="m-2 flex h-[94%] min-h-0 w-[50%] flex-col rounded-[16px] bg-[#e6d5f2]/40 overflow-hidden">
                                 <form
-                                    className="m-5 flex min-h-0 flex-1 flex-col"
+                                    className="m-5 flex min-h-0 flex-1 flex-col overflow-hidden"
                                     onSubmit={sendData}
                                 >
-
-                                    <div className="flex flex-col gap-3 shrink-0">
+                                    <div className="flex shrink-0 flex-col gap-3">
                                         <label className="mt-4 mb-2 block text-lg font-bold tracking-wide text-white/90">
                                             Product Name
                                         </label>
@@ -122,26 +129,26 @@ function Products() {
                                         />
                                     </div>
 
-
                                     <label className="mt-4 mb-2 block shrink-0 text-lg font-bold tracking-wide text-white/90">
                                         Ingredients
                                     </label>
 
-
-                                    <div className="min-h-0 flex-1 space-y-2 overflow-y-auto overflow-x-hidden p-2">
-                                        {ingredients2.map((ingred) => (
+                                    <div className="min-h-0 flex-1 space-y-2 overflow-y-auto p-2">
+                                        {Ingredients.map((ingred) => (
                                             <div
-                                                key={ingred.id}
-                                                className="box-border w-full rounded-xl border border-gray-200 bg-white p-3 text-gray-800 shadow-sm"
+                                                key={ingred.ingredient_id}
+                                                className="w-full shrink-0 rounded-xl border border-gray-200 bg-white p-3 text-gray-800 shadow-sm"
                                             >
                                                 <h1 className="font-semibold">{ingred.name}</h1>
-                                                <p>LKR: {ingred.cost}</p>
+                                                <p>LKR: {ingred.cost * ingred.quantity}</p>
+                                                <h1 className="font-semibold">
+                                                    Quantity: {ingred.quantity}
+                                                </h1>
                                             </div>
                                         ))}
                                     </div>
 
-
-                                    <div className="shrink-0 border-t border-white/20 bg-transparent pt-3">
+                                    <div className="shrink-0 border-t border-white/20 pt-3">
                                         <button
                                             type="submit"
                                             className="w-full rounded-lg bg-green-600 px-4 py-3 font-semibold text-white hover:bg-green-700"
@@ -151,12 +158,12 @@ function Products() {
                                     </div>
                                 </form>
                             </div>
-                            <div className="w-[50%] rounded-[16px] m-2 p-3 bg-[#e6d5f2]/40 h-[94%] flex justify-center">
-                                <div className="w-full h-full overflow-y-auto overflow-x-hidden">
+                            <div className="m-2 flex h-[94%] min-h-0 w-[50%] p-3  flex-col rounded-[16px] bg-[#e6d5f2]/40 overflow-hidden">
+                                <div className="w-full h-full p-2 overflow-y-auto ">
                                     {ingredients2.map((item) => (
                                         <div
-                                            key={item.id}
-                                            className="w-full rounded-xl border border-gray-200 bg-white p-2  shadow-sm"
+                                            key={item.ingredient_id}
+                                            className="w-full rounded-xl border border-gray-200 bg-white p-3 shadow-sm"
                                         >
                                             <h3 className="text-lg font-semibold text-gray-900">
                                                 {item.name}
@@ -169,10 +176,32 @@ function Products() {
                                             <div className="mt-3 flex items-center justify-between">
                                                 <span className="text-sm text-gray-600">Quantity</span>
 
+                                                <div className="flex items-center gap-3">
+                                                    <button
+                                                        onClick={() => changeQuantity(item.ingredient_id, -1)}
+                                                        className="rounded-md bg-gray-200 px-3 py-1 hover:bg-gray-300"
+                                                    >
+                                                        -
+                                                    </button>
+
+                                                    <span className="font-semibold">
+                                                        {quantities[item.ingredient_id] || 1}
+                                                    </span>
+
+                                                    <button
+                                                        onClick={() => changeQuantity(item.ingredient_id, 1)}
+                                                        className="rounded-md bg-gray-200 px-3 py-1 hover:bg-gray-300"
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
 
                                             </div>
                                             <button
-                                                onClick={() => addData(item)}
+                                                onClick={() => addData({
+                                                    ...item,
+                                                    quantity: quantities[item.ingredient_id] || 1
+                                                })}
                                                 type="button"
                                                 className="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                                             >
@@ -183,9 +212,11 @@ function Products() {
 
 
                                 </div>
+
                             </div>
                         </div>
                     </div>
+
                 </main>
             </div>
         </>
