@@ -13,7 +13,7 @@ function insertproducts(req, res) {
 
     const sql2 = `
         SELECT *
-        FROM ingredients
+        FROM infredients
         WHERE ingredient_id IN (${placeholders})
     `;
 
@@ -66,7 +66,7 @@ function insertproducts(req, res) {
 function insertingredients(req, res) {
     const { name, cost, unit } = req.body;
 
-    const sql = `INSERT INTO ingredients (name, cost, unit) VALUES (?, ?, ?)`;
+    const sql = `INSERT INTO infredients (name, cost, unit) VALUES (?, ?, ?)`;
 
     db.query(sql, [name, cost, unit], (err, result) => {
         if (err) {
@@ -87,12 +87,12 @@ function insertrecipe(product_id, ingredients) {
         return [
             product_id,
             ingred.ingredient_id,
-            ingred.unit
+            ingred.quantity
         ]
     });
     const sql = `INSERT INTO recipe (product_id, ingredient_id, quantity) VALUES ?`;
 
-    db.query(sql, [recipe], (err) => {
+    db.query(sql, [recipe], (err, result) => {
         if (err) {
             console.log(err);
         }

@@ -19,7 +19,7 @@ function dataingred(ingredients, dtaingred) {
     const results = ingredients.map((ingred) => {
 
         const dtaresults = dtaingred.find(
-            (dta) => dta.ingredient_id === ingred.ingredient_id
+            (dta) => Number(dta.ingredient_id) === Number(ingred.ingredient_id)
         );
 
         return {
@@ -38,3 +38,4 @@ function dataingred(ingredients, dtaingred) {
 
     return total;
 }
+module.exports = { calculateproduct };

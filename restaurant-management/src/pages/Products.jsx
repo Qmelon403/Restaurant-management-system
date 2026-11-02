@@ -5,8 +5,8 @@ function Products() {
     const [ingredients2, setingredients] = useState([]);
     const [quantities, setQuantities] = useState({});
     const [Ingredients, setData] = useState([]);
-    const [sellingprice, setselling] = ("");
-    const [productname, setproductname] = ("");
+    const [sellingprice, setselling] = useState("");
+    const [productname, setproductname] = useState("");
 
 
 
@@ -66,8 +66,8 @@ function Products() {
             [id]: Math.max(1, (previous[id] || 1) + amount)
         }));
     }
-    console.log(ingredients2);
-    console.log(quantities);
+    console.log(products);
+
     return (
         <>
 
@@ -112,6 +112,7 @@ function Products() {
 
                                         <input
                                             onChange={(e) => setproductname(e.target.value)}
+                                            value={productname}
                                             type="text"
                                             placeholder="Enter product name"
                                             className="mt-2 w-full rounded-md border border-white/30 bg-white/20 p-3 text-white backdrop-blur-md placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -123,6 +124,7 @@ function Products() {
 
                                         <input
                                             onChange={(e) => setselling(e.target.value)}
+                                            value={sellingprice}
                                             type="number"
                                             placeholder="Enter selling price"
                                             className="mt-2 w-full rounded-md border border-white/30 bg-white/20 p-3 text-white backdrop-blur-md placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400"
