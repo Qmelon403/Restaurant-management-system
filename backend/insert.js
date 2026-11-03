@@ -25,7 +25,7 @@ function insertproducts(req, res) {
         }
 
 
-        const { product_cost, profit_unit } =
+        const { product_cost, profit } =
             engine.calculateproduct(
                 ingredients,
                 selling_price,
@@ -40,7 +40,7 @@ function insertproducts(req, res) {
 
         db.query(
             sql,
-            [name, selling_price, product_cost, profit_unit],
+            [name, selling_price, product_cost, profit],
             (err, result) => {
 
                 if (err) {

@@ -7,7 +7,7 @@ function calculateproduct(ingredients, selling_price, dtaingred) {
     const profit = selling_price - product_cost;
     const profit_unit = (profit / selling_price) * 100;
 
-    return { product_cost, profit_unit };
+    return { product_cost, profit };
 
 
 
@@ -25,9 +25,9 @@ function dataingred(ingredients, dtaingred) {
         return {
             ingredient_id: ingred.ingredient_id,
             name: ingred.name,
-            unit_cost: dtaresults.cost / 1000,
+            unit_cost: dtaresults.cost,
             quantity: ingred.quantity,
-            totalcost: (dtaresults.cost * ingred.quantity) / 1000
+            totalcost: (dtaresults.cost * ingred.quantity)
         };
     });
 
