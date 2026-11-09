@@ -12,7 +12,7 @@ const avatarStyles = [
 const fmt = (n) =>
     Number(n || 0).toLocaleString("en-US", { maximumFractionDigits: 2 })
 
-// cost is stored per kg, quantity is in grams
+
 const lineCost = (ing) => (ing.cost / 1000) * ing.quantity
 
 function Products() {
@@ -22,7 +22,7 @@ function Products() {
     const [productname, setproductname] = useState("");
     const [selectedId, setSelectedId] = useState("");
     const [quantities, setQuantities] = useState({});
-    const [popup, setPopup] = useState(null); // null | "success" | "error"
+    const [popup, setPopup] = useState(null);
 
     const products = {
         name: productname,
@@ -96,7 +96,7 @@ function Products() {
     };
 
     const closePopup = () => {
-        // only clear the form after a successful add
+
         if (popup === "success") resetForm();
         setPopup(null);
     };
@@ -135,7 +135,7 @@ function Products() {
     return (
         <>
             <div className="relative min-h-screen isolate">
-                {/* background layer, pinned behind everything */}
+
                 <div className="absolute inset-0 -z-10 bg-slate-950">
                     <Ferrofluid
                         colors={["#8c820d", "#5d38d7", "#457a96"]}
@@ -156,7 +156,7 @@ function Products() {
                 </div>
 
                 <main className="relative z-10 mx-auto max-w-6xl px-6 py-12">
-                    {/* Header */}
+
                     <header className="mb-10">
                         <p className="mb-3 text-sm text-slate-400">
                             Products / <span className="text-emerald-400">New</span>
@@ -173,9 +173,9 @@ function Products() {
                         onSubmit={sendData}
                         className="grid items-start gap-6 lg:grid-cols-[1fr_380px]"
                     >
-                        {/* Left column */}
+
                         <div className="flex flex-col gap-6">
-                            {/* Product details */}
+
                             <section className={cardClass}>
                                 <h2 className="mb-5 text-lg font-semibold text-slate-100">
                                     Product details
@@ -209,7 +209,7 @@ function Products() {
                                 </div>
                             </section>
 
-                            {/* Add ingredient */}
+
                             <section className={cardClass}>
                                 <h2 className="mb-5 text-lg font-semibold text-slate-100">
                                     Add ingredient
@@ -269,7 +269,7 @@ function Products() {
                                 </div>
                             </section>
 
-                            {/* Ingredients list */}
+
                             <section className={cardClass}>
                                 <div className="mb-4 flex items-center gap-3">
                                     <h2 className="text-lg font-semibold text-slate-100">
@@ -331,7 +331,7 @@ function Products() {
                             </section>
                         </div>
 
-                        {/* Right column: cost summary */}
+
                         <aside className={`${cardClass} lg:sticky lg:top-6`}>
                             <h2 className="mb-4 text-lg font-semibold text-slate-100">
                                 Cost summary
@@ -389,8 +389,8 @@ function Products() {
                         >
                             <div
                                 className={`mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full text-2xl font-bold ${popup === "success"
-                                        ? "bg-emerald-500/15 text-emerald-400"
-                                        : "bg-red-500/15 text-red-400"
+                                    ? "bg-emerald-500/15 text-emerald-400"
+                                    : "bg-red-500/15 text-red-400"
                                     }`}
                             >
                                 {popup === "success" ? "✓" : "!"}
@@ -407,8 +407,8 @@ function Products() {
                                 type="button"
                                 onClick={closePopup}
                                 className={`mt-6 w-full rounded-xl px-4 py-3 font-semibold transition ${popup === "success"
-                                        ? "bg-emerald-400 text-[#06140d] hover:bg-emerald-300"
-                                        : "bg-white/10 text-slate-100 hover:bg-white/15"
+                                    ? "bg-emerald-400 text-[#06140d] hover:bg-emerald-300"
+                                    : "bg-white/10 text-slate-100 hover:bg-white/15"
                                     }`}
                             >
                                 {popup === "success" ? "Done" : "Close"}
