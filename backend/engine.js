@@ -21,13 +21,14 @@ function dataingred(ingredients, dtaingred) {
         const dtaresults = dtaingred.find(
             (dta) => Number(dta.ingredient_id) === Number(ingred.ingredient_id)
         );
+        const unit_cost = dtaresults ? dtaresults.cost / 1000 : 0;
 
         return {
             ingredient_id: ingred.ingredient_id,
             name: ingred.name,
-            unit_cost: dtaresults.cost,
+            unit_cost: unit_cost,
             quantity: ingred.quantity,
-            totalcost: (dtaresults.cost * ingred.quantity)
+            totalcost: (unit_cost * ingred.quantity)
         };
     });
 

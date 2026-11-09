@@ -5,7 +5,7 @@ function login(req, res) {
 
     const sql = `SELECT user_id, email, password, status FROM users WHERE email = ? AND status = ? AND password = ?`;
 
-    db.query(sql, [email, status, password], (err, results) => {
+    db.execute(sql, [email, status, password], (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).json({
@@ -23,7 +23,8 @@ function login(req, res) {
         console.log(user);
         res.json({
             success: true,
-            message: "success"
+            message: "success",
+            user: user
 
         });
     });
