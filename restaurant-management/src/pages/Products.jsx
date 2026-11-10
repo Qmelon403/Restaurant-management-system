@@ -12,7 +12,7 @@ const avatarStyles = [
 const fmt = (n) =>
     Number(n || 0).toLocaleString("en-US", { maximumFractionDigits: 2 })
 
-
+// cost is stored per kg, quantity is in grams
 const lineCost = (ing) => (ing.cost / 1000) * ing.quantity
 
 function Products() {
@@ -22,7 +22,9 @@ function Products() {
     const [productname, setproductname] = useState("");
     const [selectedId, setSelectedId] = useState("");
     const [quantities, setQuantities] = useState({});
-    const [popup, setPopup] = useState(null);
+    const [popup, setPopup] = useState(null); // null | "success" | "error"
+    const [pickerOpen, setPickerOpen] = useState(false);
+    const [search, setSearch] = useState("");
 
     const products = {
         name: productname,
@@ -33,6 +35,20 @@ function Products() {
     const selectedItem = ingredients2.find(
         (i) => String(i.ingredient_id) === String(selectedId)
     );
+
+    const filteredIngredients = ingredients2.filter((i) =>
+        i.name?.toLowerCase().includes(search.trim().toLowerCase())
+    );
+
+    const closePicker = () => {
+        setPickerOpen(false);
+        setSearch("");
+    };
+
+    const pickIngredient = (id) => {
+        setSelectedId(String(id));
+        closePicker();
+    };
 
     const totalCost = Ingredients.reduce(
         (sum, ing) => sum + lineCost(ing),
@@ -96,7 +112,7 @@ function Products() {
     };
 
     const closePopup = () => {
-
+        // only clear the form after a successful add
         if (popup === "success") resetForm();
         setPopup(null);
     };
@@ -135,7 +151,7 @@ function Products() {
     return (
         <>
             <div className="relative min-h-screen isolate">
-
+                {/* background layer, pinned behind everything */}
                 <div className="absolute inset-0 -z-10 bg-slate-950">
                     <Ferrofluid
                         colors={["#8c820d", "#5d38d7", "#457a96"]}
@@ -156,7 +172,7 @@ function Products() {
                 </div>
 
                 <main className="relative z-10 mx-auto max-w-6xl px-6 py-12">
-
+                    {/* Header */}
                     <header className="mb-10">
                         <p className="mb-3 text-sm text-slate-400">
                             Products / <span className="text-emerald-400">New</span>
@@ -173,9 +189,9 @@ function Products() {
                         onSubmit={sendData}
                         className="grid items-start gap-6 lg:grid-cols-[1fr_380px]"
                     >
-
+                        {/* Left column */}
                         <div className="flex flex-col gap-6">
-
+                            {/* Product details */}
                             <section className={cardClass}>
                                 <h2 className="mb-5 text-lg font-semibold text-slate-100">
                                     Product details
@@ -209,7 +225,7 @@ function Products() {
                                 </div>
                             </section>
 
-
+                            {/* Add ingredient */}
                             <section className={cardClass}>
                                 <h2 className="mb-5 text-lg font-semibold text-slate-100">
                                     Add ingredient
@@ -217,21 +233,16 @@ function Products() {
                                 <div className="grid gap-4 sm:grid-cols-[1.6fr_1fr]">
                                     <div>
                                         <label className={labelClass}>Ingredient</label>
-                                        <select
-                                            value={selectedId}
-                                            onChange={(e) => setSelectedId(e.target.value)}
-                                            className={`${inputClass} bg-[#1a1f2b]`}
+                                        <button
+                                            type="button"
+                                            onClick={() => setPickerOpen(true)}
+                                            className={`${inputClass} flex items-center justify-between bg-[#1a1f2b] text-left`}
                                         >
-                                            {ingredients2.map((item) => (
-                                                <option
-                                                    key={item.ingredient_id}
-                                                    value={item.ingredient_id}
-                                                    className="bg-[#1a1f2b]"
-                                                >
-                                                    {item.name}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            <span className={selectedItem ? "text-white" : "text-white/30"}>
+                                                {selectedItem ? selectedItem.name : "Select ingredient"}
+                                            </span>
+                                            <span className="text-xs text-slate-400">▾</span>
+                                        </button>
                                     </div>
                                     <div>
                                         <label className={labelClass}>Cost per kg</label>
@@ -269,7 +280,7 @@ function Products() {
                                 </div>
                             </section>
 
-
+                            {/* Ingredients list */}
                             <section className={cardClass}>
                                 <div className="mb-4 flex items-center gap-3">
                                     <h2 className="text-lg font-semibold text-slate-100">
@@ -331,7 +342,7 @@ function Products() {
                             </section>
                         </div>
 
-
+                        {/* Right column: cost summary */}
                         <aside className={`${cardClass} lg:sticky lg:top-6`}>
                             <h2 className="mb-4 text-lg font-semibold text-slate-100">
                                 Cost summary
@@ -376,6 +387,71 @@ function Products() {
                     </form>
                 </main>
 
+                {pickerOpen && (
+                    <div
+                        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+                        onClick={closePicker}
+                    >
+                        <div
+                            role="dialog"
+                            aria-modal="true"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex max-h-[80vh] w-full max-w-md flex-col rounded-3xl border border-white/10 bg-[#11151d] p-6 shadow-2xl"
+                        >
+                            <div className="mb-4 flex items-center justify-between">
+                                <h3 className="text-lg font-semibold text-slate-100">
+                                    Select ingredient
+                                </h3>
+                                <button
+                                    type="button"
+                                    onClick={closePicker}
+                                    aria-label="Close"
+                                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 text-slate-400 transition hover:text-white"
+                                >
+                                    ✕
+                                </button>
+                            </div>
+
+                            <input
+                                autoFocus
+                                type="text"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Search ingredients..."
+                                className={inputClass}
+                            />
+
+                            <div className="mt-4 min-h-0 flex-1 space-y-1 overflow-y-auto pr-1">
+                                {filteredIngredients.length === 0 ? (
+                                    <p className="py-8 text-center text-sm text-slate-500">
+                                        No ingredients found.
+                                    </p>
+                                ) : (
+                                    filteredIngredients.map((item) => {
+                                        const active =
+                                            String(item.ingredient_id) === String(selectedId);
+                                        return (
+                                            <button
+                                                key={item.ingredient_id}
+                                                type="button"
+                                                onClick={() => pickIngredient(item.ingredient_id)}
+                                                className={`flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm transition ${
+                                                    active
+                                                        ? "bg-emerald-500/15 text-emerald-400"
+                                                        : "text-slate-100 hover:bg-white/[0.06]"
+                                                }`}
+                                            >
+                                                <span>{item.name}</span>
+                                                {active && <span>✓</span>}
+                                            </button>
+                                        );
+                                    })
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {popup && (
                     <div
                         className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
@@ -388,10 +464,11 @@ function Products() {
                             className="w-full max-w-sm rounded-3xl border border-white/10 bg-[#11151d] p-8 text-center shadow-2xl"
                         >
                             <div
-                                className={`mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full text-2xl font-bold ${popup === "success"
-                                    ? "bg-emerald-500/15 text-emerald-400"
-                                    : "bg-red-500/15 text-red-400"
-                                    }`}
+                                className={`mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full text-2xl font-bold ${
+                                    popup === "success"
+                                        ? "bg-emerald-500/15 text-emerald-400"
+                                        : "bg-red-500/15 text-red-400"
+                                }`}
                             >
                                 {popup === "success" ? "✓" : "!"}
                             </div>
@@ -406,10 +483,11 @@ function Products() {
                             <button
                                 type="button"
                                 onClick={closePopup}
-                                className={`mt-6 w-full rounded-xl px-4 py-3 font-semibold transition ${popup === "success"
-                                    ? "bg-emerald-400 text-[#06140d] hover:bg-emerald-300"
-                                    : "bg-white/10 text-slate-100 hover:bg-white/15"
-                                    }`}
+                                className={`mt-6 w-full rounded-xl px-4 py-3 font-semibold transition ${
+                                    popup === "success"
+                                        ? "bg-emerald-400 text-[#06140d] hover:bg-emerald-300"
+                                        : "bg-white/10 text-slate-100 hover:bg-white/15"
+                                }`}
                             >
                                 {popup === "success" ? "Done" : "Close"}
                             </button>
